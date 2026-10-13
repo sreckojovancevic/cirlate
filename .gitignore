@@ -3,3 +3,6 @@ obj/
 publish/
 .vs/
 *.user
+build.log
+procmon.csv
+*.PML

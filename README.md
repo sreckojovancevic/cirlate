@@ -149,6 +149,13 @@ CIRLAT was made by a person and an AI working together.
 - Designed the icon (an original drawing, `assets/cirlat.ico`)
 - Wrote this README and the additions to the specification
 
+## Acknowledgments
+
+- **Claude (Anthropic)**: CIRLAT's code, tests, build script, icon and documentation were written by Claude, an AI model by Anthropic, working with Srećko in one conversation. Claude reviewed the specification, designed the protection model, wrote and tested the core, and diagnosed the build failure from MSBuild and Process Monitor logs. The idea, the specification, the decisions and the testing on real data are Srećko's.
+- **[Sysinternals Process Monitor](https://learn.microsoft.com/sysinternals/downloads/procmon)**: it showed which process was deleting the build output.
+- **.NET and Windows Forms**: the runtime and UI framework CIRLAT is built on.
+- **Short**, the sister project ([sreckojovancevic/short](https://github.com/sreckojovancevic/short)): it shares CIRLAT's approach to protected paths and SUBST resolution.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).

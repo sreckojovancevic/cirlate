@@ -172,6 +172,7 @@ internal sealed class MainForm : Form
                 foreach (var p in paths.Where(Directory.Exists)) AddFolder(p);
         };
         _folders.KeyDown += (_, e) => { if (e.KeyCode == Keys.Delete) RemoveSelectedFolders(); };
+        _folders.SelectedIndexChanged += (_, _) => UpdateButtons();
 
         _grid.CellValueNeeded += Grid_CellValueNeeded;
         _grid.CellValuePushed += Grid_CellValuePushed;
@@ -236,14 +237,23 @@ internal sealed class MainForm : Form
 
         if (_folders.Items.Cast<string>().Any(f => PathResolver.Equal(f, path))) return;
         _folders.Items.Add(path);
+        _folders.ClearSelected();
+        _folders.SelectedIndex = _folders.Items.Count - 1;
         InvalidatePlan();
+        UpdateButtons();
+        UpdateStats();
     }
 
     private void RemoveSelectedFolders()
     {
         if (_busy) return;
-        foreach (var s in _folders.SelectedItems.Cast<string>().ToList()) _folders.Items.Remove(s);
+        var selected = _folders.SelectedItems.Cast<string>().ToList();
+        if (selected.Count == 0 && _folders.Items.Count == 1)
+            selected.Add((string)_folders.Items[0]);
+        foreach (var s in selected) _folders.Items.Remove(s);
         InvalidatePlan();
+        UpdateButtons();
+        UpdateStats();
     }
 
     // ───────────────────────────── analiza ─────────────────────────────
@@ -587,7 +597,7 @@ internal sealed class MainForm : Form
     {
         bool idle = !_busy;
         _add.Enabled = idle;
-        _remove.Enabled = idle && _folders.Items.Count > 0;
+        _remove.Enabled = idle && (_folders.SelectedItems.Count > 0 || _folders.Items.Count == 1);
         _recursive.Enabled = idle;
         _kind.Enabled = idle;
         _suffix.Enabled = idle && !_executed;
